@@ -35,7 +35,7 @@
   },
   "logo": {
     "light": "/images/namic-logo(1).svg",
-    "dark": "/logo/dark.svg"
+    "dark": "/images/namic-logo(1).svg"
   },
   "navbar": {
     "links": [
