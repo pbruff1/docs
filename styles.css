@@ -1,7 +1,4 @@
 
-header{
-  margin-bottom:0!important;
-}
 
 .logo{
   box-sizing:border-box; 
@@ -102,7 +99,9 @@ cursor:pointer;
 }
 
 
-
+#content{
+  margin:0!important;
+}
 
 
 
