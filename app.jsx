@@ -1,17 +1,23 @@
+
 export const FlowCard = ({ title, type, step, children }) => {
   return (
-    <div className="row mx-0 mb-4 p-0">
-      <div className={`col-1 text-white p-2 ${type}-logo`}>
-        Step {step}
+    <div className="flow-card">
+
+      <div className="flow-card-header">
+        <div className={`flow-card-step ${type}-logo`}>
+          Step {step}
+        </div>
+
+        <div className={`flow-card-title ${type}-text`}>
+          {title}
+        </div>
       </div>
 
-      <div className={`col-11 p-2 ${type}-text`}>
-        {title}
-      </div>
-
-      <div className="col-12 p-3 border">
+      <div className="flow-card-content">
         {children}
       </div>
+
     </div>
   );
 };
+
