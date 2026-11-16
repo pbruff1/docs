@@ -1,3 +1,8 @@
+
+header{
+  margin-bottom:0!important;
+}
+
 .logo{
   box-sizing:border-box; 
   flex:0 0 10%; 
@@ -88,9 +93,12 @@ cursor:pointer;
     width: auto;
 }
 
-hr {
-  margin: 0 !important;
-  padding: 0 !important;
+ hr {
+  margin: 1rem 0;
+  color: inherit;
+  border: 0;
+  border-top: 1px solid;
+  opacity: 0.25;
 }
 
 
