@@ -1,3 +1,56 @@
-h1{
-color:red!important;
+
+.http-logo {background-color: #009DA5!important;}
+.http-text{background-color: #D9F0F2!important;}
+
+.var-logo {background-color: #770BD6!important;}
+.var-text{background-color: #EBDBF9!important;}
+
+.dataverse-logo {background-color: #35B357!important;}
+.dataverse-text{background-color: #E4E4E4!important;}
+
+
+.schedule-logo {background-color:#1F85FF!important;}
+.schedule-text{background-color: #DEEDFF!important;}
+
+.loop-logo {background-color:#486991!important;}
+.loop-text{background-color: #E4E9EF!important;}
+
+
+.compose-logo{background-color: #8C6CFF!important;}
+.compose-text {background-color:#EEE9FF!important;}
+
+.control-logo{background-color: #484F58!important;}
+.control-text {background-color:#DEDFE0!important;}
+
+.yes-logo{background-color: #88DA8D!important;}
+.yes-text {background-color:#EDF9EE!important;}
+
+.no-logo{background-color: #FB8981!important;}
+.no-text {background-color:#FEEDEC!important;}
+
+.terminate-logo{background-color: #F41700!important;}
+.terminate-text {background-color:#FDDCD9!important;}
+
+.outlook-logo{background-color: #0078D4!important;}
+.outlook-text {background-color:#D9EBF9!important;}
+
+.get-logo{background-color: #709727!important;}
+.get-text {background-color: #EAF0DF!important;}
+
+.scope-logo{background-color: #8C3900!important;}
+.scope-text {background-color: #EEE1D9!important;}
+
+.function-logo{background-color: #AD008C!important;}
+.function-text {background-color: #F3D9EE!important;}
+
+
+
+
+.flowField{
+cursor:pointer;
+}
+
+.popover {
+    max-width: 350px;
+    width: auto;
 }
