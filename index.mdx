@@ -17,12 +17,20 @@ import { FlowInput } from '/app.jsx'
   This flow runs on a schedule once every day.
 </FlowCard>
 
-<br />
-
 <FlowCard title="List Invoices with Blank Receipt" type="dataverse" step="2">
   <FlowInput title="Table Name">Contacts </FlowInput>
   <FlowInput title="Table Name">Contacts </FlowInput>
   <FlowInput title="Table Name">Contacts </FlowInput>
 </FlowCard>
 
-<br />
+<FlowCard title="Apply to each invoice" type="loop" step="3">
+  An apply to each loop is applied to each record in the previous list action.
+
+  <FlowCard title="List Invoices with Blank Receipt" type="dataverse" step="3a">
+    Test
+  </FlowCard>
+
+  <FlowCard title="List Invoices with Blank Receipt" type="dataverse" step="3a">
+    Test
+  </FlowCard>
+</FlowCard>
