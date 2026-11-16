@@ -61,3 +61,46 @@ cursor:pointer;
     max-width: 350px;
     width: auto;
 }
+
+
+
+
+
+.logo{
+  box-sizing:border-box; 
+  flex:0 0 10%; 
+  border:1px solid #ddd; 
+  padding:1%;
+}
+
+.text{
+  box-sizing:border-box; 
+  flex:1; 
+  min-width:0; 
+  border:1px solid #ddd; 
+  border-left:0; 
+  padding:1%;
+}
+
+.flowContent{
+  display:block; 
+  box-sizing:border-box; 
+  width:100%; 
+  border:1px solid #ddd; 
+  border-top:0; 
+  padding:1%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
