@@ -22,9 +22,10 @@ export const FlowCard = ({ title, type, step, children }) => {
 };
 
 
+
 export const FlowInput = ({ title, children }) => {
   return (
-    <div style={{ display: "flex", margin-bottom:"1%" }}>
+    <div style={{ display: "flex", marginBottom: "1%" }}>
       <span style={{ width: "15%", padding: "1%" }}>
         {title}
       </span>
@@ -39,6 +40,7 @@ export const FlowInput = ({ title, children }) => {
     </div>
   );
 };
+
 
 
 
