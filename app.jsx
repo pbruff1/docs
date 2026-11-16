@@ -1,7 +1,7 @@
 
 export const FlowCard = ({ title, type, step, children }) => {
   return (
-    <div className="flowCard">
+    <div className="flowCard" style="margin-bottom:11%!important">
 
       <div style={{ display: "flex" }}>
         <span className={`${type}-logo logo`}>
