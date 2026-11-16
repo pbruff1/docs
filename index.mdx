@@ -1,6 +1,7 @@
 ---
 title: "PB: Generate MX Receipt"
 description: "The purpose of this flow is to populate the namic_mxreceipt field on the invoice record with the invoice receipt url. This url will lead to the MX View Invoice page for the specified invoice. This way we can mail out links to invoice receipts which members can then view online."
+mode: "wide"
 ---
 
 <img
@@ -11,10 +12,16 @@ description: "The purpose of this flow is to populate the namic_mxreceipt field 
 
 import { FlowCard } from '/app.jsx'
 
-<FlowCard title="Test" type="dataverse" step="1">
-  This is a test
+<FlowCard title="Runs Once Daily" type="schedule" step="1">
+  This flow runs on a schedule once every day.
 </FlowCard>
 
-<FlowCard title="Test" type="dataverse" step="1">
-  This is a test
+<br />
+
+<FlowCard title="List Invoices with Blank Receipt" type="dataverse" step="2">
+  ```js
+  console.log("PAtrick")
+  ```
 </FlowCard>
+
+<br />
