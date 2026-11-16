@@ -3,9 +3,9 @@
   "theme": "mint",
   "name": "NAMIC Documenation",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#49A3CA",
+    "light": "#49A3CA",
+    "dark": "#49A3CA"
   },
   "favicon": "/favicon.svg",
   "navigation": {
