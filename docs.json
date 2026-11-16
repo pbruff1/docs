@@ -69,7 +69,7 @@
       "linkedin": "https://linkedin.com/company/mintlify"
     }
   },
-  "background": {
-    "image": "/logo/light.svg"
+  "styling": {
+    "codeblocks": "system"
   }
 }
