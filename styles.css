@@ -44,7 +44,9 @@
 .function-text {background-color: #F3D9EE!important;}
 
 
-
+.list-none{
+    display:none!important;
+}
 
 .flowField{
 cursor:pointer;
