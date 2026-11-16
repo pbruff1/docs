@@ -44,6 +44,11 @@
 .function-text {background-color: #F3D9EE!important;}
 
 
+#content-container{
+    min-width:1000px;
+}
+
+
 .list-none{
     display:none!important;
 }
