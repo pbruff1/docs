@@ -13,7 +13,7 @@ export const FlowCard = ({ title, type, step, children }) => {
         </span>
       </div>
 
-      <div className="flowContent" style={{ padding: "10px", gap: "10px"}}>
+      <div className="flowContent">
         {children}
       </div>
 
