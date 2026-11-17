@@ -71,5 +71,8 @@
   },
   "styling": {
     "codeblocks": "system"
+  },
+  "appearance": {
+    "strict": true
   }
 }
