@@ -99,6 +99,11 @@ cursor:pointer;
 }
 
 
+ br {
+  margin: 1rem 0;
+}
+
+
 #content{
   margin:0!important;
 }

@@ -1,0 +1,25 @@
+---
+title: "PB: Mismatch Login Audit"
+description: "The purpose of this flow is to locate contacts with an email address in their Web Login field and update the Email Address field to match the web login.  This way we do not have mismatching Email and Web Login values."
+mode: "wide"
+---
+
+---
+
+import { FlowCard } from '/app.jsx'
+import { FlowInput } from '/app.jsx'
+
+<FlowCard title="Runs Every Two Hours" type="schedule" step="1">
+  This flow runs on a schedule every two hours
+</FlowCard>
+
+<FlowCard title="List Invoices with Blank Receipt" type="dataverse" step="2">
+  <FlowInput title="Table Name">Contacts</FlowInput>
+
+  <FlowInput title="Filter Rows">
+    namic_webloginmismatch eq true and <br />
+    statecode eq 0 and <br />
+    emailaddress1 eq null and <br />
+    contains(pa_webloginname, '@')
+  </FlowInput>
+</FlowCard>
