@@ -1,0 +1,51 @@
+---
+title: "PB: Notify Membership of Primary Contacts"
+description: "The purpose of this flow is to notify the membership team of any primary contacts in the system that do not have an email address. The flow will send a weekly email to the membership email mailbox that states the number of records. The email will also contain a link to the advanced find in UX that lists the impacted contact records."
+mode: "wide"
+---
+
+---
+
+import { FlowCard } from '/app.jsx'
+import { FlowInput } from '/app.jsx'
+
+<FlowCard title="Recurrence" type="schedule" step="1">
+  This flow runs once every week, Monday at 10am.
+</FlowCard>
+
+<FlowCard title="List Primary Contacts with No Email" type="dataverse" step="2">
+  <FlowInput title="Table Name">Contacts</FlowInput>
+
+  <FlowInput title="Fetch XML">
+    ```javascript
+    <fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="true">
+      <entity name="contact">
+          <attribute name="fullname" />
+          <attribute name="telephone1" />
+          <attribute name="pa_member" />
+          <attribute name="pa_contactnumber" />
+          <attribute name="namic_membertype" />
+          <order attribute="fullname" descending="false" />
+          <filter type="and">
+          <condition attribute="statecode" operator="eq" value="0" />
+          <condition attribute="emailaddress1" operator="null" />
+          <condition attribute="namic_membertype" operator="ne" value="7" />
+          </filter>
+          <link-entity name="account" from="primarycontactid" to="contactid" link-type="inner" alias="ac">
+          <filter type="and">
+              <condition attribute="accountnumber" operator="not-null" />
+          </filter>
+          </link-entity>
+      </entity>
+    </fetch>
+    ```
+  </FlowInput>
+</FlowCard>
+
+<FlowCard title="Count" type="compose" step="3">
+  The <code>length()</code> function is used to count the number of records in the previous list action.
+</FlowCard>
+
+<FlowCard title="Sends an Email" type="outlook" step="4">
+  Sends an email to the membership team. This email will provide the number of impacted contacts. It will also link the recipient to an advanced find in UX that lists all primary contacts that do not have an email address. The output from the previous step Count is used to list the number of records.
+</FlowCard>
