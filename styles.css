@@ -1,4 +1,7 @@
-
+.code-block{
+  margin:0%!important;
+  border-radius:0!important;
+}
 
 .logo{
   box-sizing:border-box; 
