@@ -23,3 +23,19 @@ import { FlowInput } from '/app.jsx'
     contains(pa_webloginname, '@')
   </FlowInput>
 </FlowCard>
+
+<FlowCard title="Apply to each contact" type="loop" step="3">
+  <p>
+    An apply to each loop is applied to each record in the previous list action.
+  </p>
+
+  <FlowCard title="Get Contact to Update" type="dataverse" step="3a">
+    <FlowInput title="Table Name">Contacts</FlowInput>
+    <FlowInput title="Record Id"><code>contactid</code></FlowInput>
+  </FlowCard>
+
+  <FlowCard title="Update Contact so Email Matches Web Login" type="dataverse" step="3b">
+    <FlowInput title="Table Name">Contacts</FlowInput>
+    <FlowInput title="Email"><code>pa_webloginname</code></FlowInput>
+  </FlowCard>
+</FlowCard>
