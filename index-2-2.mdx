@@ -13,6 +13,8 @@ import { FlowInput } from '/app.jsx'
   This flow runs once every week, Monday at 10am.
 </FlowCard>
 
+<br />
+
 <FlowCard title="List Primary Contacts with No Email" type="dataverse" step="2">
   <FlowInput title="Table Name">Contacts</FlowInput>
 
@@ -42,10 +44,16 @@ import { FlowInput } from '/app.jsx'
   </FlowInput>
 </FlowCard>
 
+<br />
+
 <FlowCard title="Count" type="compose" step="3">
   The <code>length()</code> function is used to count the number of records in the previous list action.
 </FlowCard>
 
+<br />
+
 <FlowCard title="Sends an Email" type="outlook" step="4">
   Sends an email to the membership team. This email will provide the number of impacted contacts. It will also link the recipient to an advanced find in UX that lists all primary contacts that do not have an email address. The output from the previous step Count is used to list the number of records.
 </FlowCard>
+
+<br />
