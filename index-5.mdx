@@ -1,0 +1,43 @@
+---
+title: "PB: Deactivated Contact Committee Member End Date"
+description: "This flow automatically updates the Term End date for all active committee memberships associated with a deactivated contact. The flow triggers any time a contact is deactivated, lists their committee memberships, and sets the pa_termends value to the current date."
+mode: "wide"
+---
+
+---
+
+import { FlowCard } from '/app.jsx'
+import { FlowInput } from '/app.jsx'
+import { Field } from '/app.jsx'
+
+<FlowCard title="When a Contact is Deactivated" type="dataverse" step="1">
+  This flow runs any time a contact record is deactivated.
+</FlowCard>
+
+<br />
+
+<FlowCard title="List Committee Memberships" type="dataverse" step="2">
+  Lists all current committee members that belong to the deactivated contact using an ODATA filter.
+
+  <FlowInput title="Table Name">Committee Members </FlowInput>
+
+  <FlowInput title="Filter Rows">
+    \_pa_contactid_value eq <Field>contactid</Field> and pa_memberstatus ne 3
+  </FlowInput>
+</FlowCard>
+
+<br />
+
+<FlowCard title="Apply to each committee member" type="loop" step="3">
+  An apply to each loop is applied to each record in the previous list action.
+
+  <FlowCard title="Update Committee Members Set End Date to Current Date" type="dataverse" step="3a">
+    The update a row action is used to update the <Field>pa_termends</Field> field to the current date.
+
+    <FlowInput title="Table Name">Committee Member </FlowInput>
+    <FlowInput title="Row Id"><Field>committeememberid</Field></FlowInput>
+    <FlowInput title="Term Ends"><Field>utcNOW()</Field></FlowInput>
+  </FlowCard>
+</FlowCard>
+
+<br />
