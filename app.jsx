@@ -42,3 +42,17 @@ export const FlowInput = ({ title, children }) => {
 };
 
 
+export const Field = ({ children }) => {
+  return (
+    <code
+      style={{
+        border: "1px solid lightgrey",
+        padding: "2px 5px",
+        borderRadius: "4px",
+        fontSize: "0.85em"
+      }}
+    >
+      {children}
+    </code>
+  );
+};
