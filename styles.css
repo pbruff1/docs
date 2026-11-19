@@ -142,6 +142,6 @@ cursor:pointer;
   margin: 10px;
 }
 
-.link{
+a.link{
   text-decoration:none!important;
 }
