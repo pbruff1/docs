@@ -43,29 +43,3 @@ export const FlowInput = ({ title, children }) => {
 
 
 
-
-import { useEffect } from "react";
-
-export const FlowPopover = ({ title, children }) => {
-
-  useEffect(() => {
-    const script = document.createElement("script");
-
-    script.src =
-      "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js";
-
-    script.async = true;
-
-    document.body.appendChild(script);
-
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
-
-  return (
-    <div>
-      <button type="button" class="btn btn-lg btn-danger" data-bs-toggle="popover" data-bs-title="Popover title" data-bs-content="And here’s some amazing content. It’s very engaging. Right?">Click to toggle popover</button>
-    </div>
-  );
-};
