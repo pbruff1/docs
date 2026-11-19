@@ -25,8 +25,10 @@ import { Field } from '/app.jsx'
 <br />
 
 <FlowCard title="List Invoices with Blank Receipt" type="dataverse" step="2">
+  Lists all invoices missing a value in <Field>namic_mxreciept</Field>
+
   <FlowInput title="Table Name">Invoice </FlowInput>
-  <FlowInput title="Filter Rows">namic_mxreciept eq <code>null</code> </FlowInput>
+  <FlowInput title="Filter Rows">namic_mxreciept eq <Field>null</Field> </FlowInput>
 </FlowCard>
 
 <br />
@@ -35,8 +37,10 @@ import { Field } from '/app.jsx'
   An apply to each loop is applied to each record in the previous list action.
 
   <FlowCard title="Update Invoice to Populate Receipt" type="dataverse" step="3a">
+    The update a row action is used to update the <Field>namic_mxreciept</Field> field.
+
     <FlowInput title="Table Name">Invoices </FlowInput>
-    <FlowInput title="Row Id"><code>invoiceid</code></FlowInput>
+    <FlowInput title="Row Id"><Field>invoiceid</Field></FlowInput>
     <FlowInput title="MX Reciept">[https://my.namic.org/My-Account/My-Invoices/View-Invoice?invoiceid](https://my.namic.org/My-Account/My-Invoices/View-Invoice?invoiceid) = <Field>invoiceid</Field></FlowInput>
   </FlowCard>
 </FlowCard>
