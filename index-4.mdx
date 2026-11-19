@@ -1,0 +1,35 @@
+---
+title: "PB: Education Activity Email"
+description: "When an education activity is created for a non-fee item, this flow will send an email to the contact. This is a standard email notifying the contact that they have a new education activity and can view more information in the MX portal."
+mode: "wide"
+---
+
+---
+
+import { FlowCard } from '/app.jsx'
+import { FlowInput } from '/app.jsx'
+
+<FlowCard title="When an Education Activity is Created.  " type="dataverse" step="1">
+  This flow runs whenever an education activity record is created.
+</FlowCard>
+
+<br />
+
+<FlowCard title="Get Education Item" type="dataverse" step="2">
+  <FlowInput title="Table Name">Education Item </FlowInput>
+  <FlowInput title="Filter Rows"><code>pa_educationitemid</code></FlowInput>
+</FlowCard>
+
+<br />
+
+<FlowCard title="Apply to each invoice" type="loop" step="3">
+  An apply to each loop is applied to each record in the previous list action.
+
+  <FlowCard title="Update Invoice to Populate Receipt" type="dataverse" step="3a">
+    <FlowInput title="Table Name">Invoices </FlowInput>
+    <FlowInput title="Row Id">..... </FlowInput>
+    <FlowInput title="MX Reciept">.... </FlowInput>
+  </FlowCard>
+</FlowCard>
+
+<br />
