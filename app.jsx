@@ -44,15 +44,28 @@ export const FlowInput = ({ title, children }) => {
 
 
 
-import * as React from 'react';
-import '@mantine/core/styles.css';
-import { MantineProvider, Card, Group, Title, Text, Button, Popover } from '@mantine/core';
+import { useEffect } from "react";
 
-export const FlowPopover = ({ title, children }) => (
-  <Popover position="bottom" withArrow shadow="md">
-    <Popover.Target>
-      <Button variant="light">{title}</Button>
-    </Popover.Target>
-    <Popover.Dropdown>{children}</Popover.Dropdown>
-  </Popover>
-);
+export const FlowPopover = ({ title, children }) => {
+
+  useEffect(() => {
+    const script = document.createElement("script");
+
+    script.src =
+      "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js";
+
+    script.async = true;
+
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
+  return (
+    <div>
+      {/* Your component */}
+    </div>
+  );
+};
