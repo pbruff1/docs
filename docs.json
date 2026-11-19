@@ -19,6 +19,12 @@
           "index-2",
           "index-2-2"
         ]
+      },
+      {
+        "group": "NAMIC TDS Connector",
+        "pages": [
+          "untitled-page"
+        ]
       }
     ],
     "global": {

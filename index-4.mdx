@@ -16,20 +16,30 @@ import { FlowInput } from '/app.jsx'
 <br />
 
 <FlowCard title="Get Education Item" type="dataverse" step="2">
+  Gets the education item from the activity that triggered the flow.
+
   <FlowInput title="Table Name">Education Item </FlowInput>
   <FlowInput title="Filter Rows"><code>pa_educationitemid</code></FlowInput>
 </FlowCard>
 
 <br />
 
-<FlowCard title="Apply to each invoice" type="loop" step="3">
-  An apply to each loop is applied to each record in the previous list action.
+<FlowCard title="Condition" type="control" step="3">
+  Condition checks if the education <code>pa_editemtype</code> is equal to 4 which means it is a course.
+</FlowCard>
 
-  <FlowCard title="Update Invoice to Populate Receipt" type="dataverse" step="3a">
-    <FlowInput title="Table Name">Invoices </FlowInput>
-    <FlowInput title="Row Id">..... </FlowInput>
-    <FlowInput title="MX Reciept">.... </FlowInput>
+<br />
+
+<FlowCard title="Condition" type="yes" step="3">
+  <FlowCard title="Condition" type="outlook" step="3">
+    if the conditioon is met, an email notifies the user.
   </FlowCard>
+</FlowCard>
+
+<br />
+
+<FlowCard title="Condition" type="no" step="3">
+  if the condition is not met, then the flow is terminated.
 </FlowCard>
 
 <br />

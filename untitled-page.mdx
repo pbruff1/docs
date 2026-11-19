@@ -1,0 +1,234 @@
+---
+title: "SalesForceController"
+mode: "wide"
+description: "Identifies accounts that need to be synchronized with Salesforce and determines whether their namic_sendtosalesforce field should be set to Yes or No. SQL queries executed through the NAMIC TDS connector determine which records meet the synchronization criteria."
+---
+
+## Overview
+
+The purpose of the `SalesForceController` is to identify accounts that should be sent to Salesforce and determine which accounts should no longer be included in the Salesforce synchronization process.
+
+The controller uses SQL queries executed through the NAMIC TDS connector to retrieve and compare account records from Dataverse.
+
+Two queries are executed:
+
+- **Accounts01:** Identifies accounts that meet the criteria for Salesforce synchronization.
+- **Accounts02:** Identifies accounts that are currently marked for Salesforce synchronization.
+
+The results are compared to determine which accounts need their `namic_sendtosalesforce` field updated.
+
+The controller returns a list of accounts requiring an update, along with an `UpdateTo` property indicating whether the field should be set to `Yes` or `No`.
+
+## Process
+
+<Steps>
+  <Step title="Identify accounts that qualify for Salesforce synchronization">
+    The first query identifies accounts that meet at least one of the defined Salesforce synchronization criteria.
+
+    The query evaluates account attributes, roster memberships, and sponsorship history.
+
+    This query is stored in a string variable called `Accounts01`.
+
+    ```sql
+    SELECT DISTINCT
+        a.accountid,
+        a.name,
+        a.namic_sendtosalesforce
+    FROM account AS a
+    LEFT JOIN pa_rostermember AS r
+        ON r.pa_customerid = a.accountid
+    LEFT JOIN namic_sponsorshiphistory AS s
+        ON s.namic_sponsor = a.accountid
+    WHERE
+        a.namic_organizationtype = 15
+        OR a.namic_membershiptype IN (5, 10, 11, 15, 16)
+        OR a.namic_businessfocus IN (11, 8)
+        OR (
+            r.pa_groupid = '8a8bf2ca-58b9-42f0-9e88-8b0669126e36'
+            AND r.statecode = 0
+        )
+        OR (
+            r.pa_rosterid = 'bd288af7-a37a-ef11-ac20-7c1e521b9b3e'
+            AND r.statecode = 0
+        )
+        OR (
+            r.pa_rosterid = 'bcd265cb-51ad-4481-b40e-dbb843458bb9'
+            AND r.statecode = 0
+        )
+        OR (
+            s.namic_year = YEAR(GETDATE())
+            AND s.namic_sponsorshiplevel IS NOT NULL
+            AND s.namic_sponsorshiplevel <> 1
+        )
+        OR (
+            s.namic_year = YEAR(GETDATE()) - 1
+            AND s.namic_sponsorshiplevel IS NOT NULL
+            AND s.namic_sponsorshiplevel <> 1
+        );
+    ```
+
+    An account qualifies if it meets at least one of the following conditions:
+
+    - Its organization type is `15`.
+    - Its membership type is `5`, `10`, `11`, `15`, or `16`.
+    - Its business focus is `11` or `8`.
+    - It has an active roster membership associated with the specified group.
+    - It has an active membership in either of the specified rosters.
+    - It has a sponsorship record for the current year or previous year with a sponsorship level other than `1`.
+
+    The `DISTINCT` keyword ensures that accounts appearing multiple times because of the joins are returned only once.
+  </Step>
+  <Step title="Retrieve accounts currently marked for Salesforce synchronization">
+    The second query retrieves all accounts that currently have their `namic_sendtosalesforce` field set to `true`.
+
+    These accounts will be compared against the results of the first query to determine whether they should continue to be included in Salesforce synchronization.
+
+    This query is stored in a string variable called `Accounts02`.
+
+    ```sql
+    SELECT DISTINCT
+        accountid,
+        name,
+        namic_sendtosalesforce
+    FROM Account
+    WHERE namic_sendtosalesforce = 1;
+    ```
+
+    This query provides the existing list of accounts flagged for Salesforce synchronization.
+  </Step>
+  <Step title="Execute both queries and compare the results">
+    Both queries are executed using the NAMIC TDS connector.
+
+    The results are compared to determine which accounts need their `namic_sendtosalesforce` field changed.
+
+    ```csharp
+    [HttpGet("UpdateAccounts")]
+    public async Task<IActionResult> UpdateAccounts()
+    {
+        var Result01 = await tdsDataService.ExecuteQueryAsDictionaryAsync(Accounts01);
+        var Result02 = await tdsDataService.ExecuteQueryAsDictionaryAsync(Accounts02);
+    
+        var updateToYes = Result01
+            .Where(d =>
+                !(d.ContainsKey("namic_sendtosalesforce") &&
+                  d["namic_sendtosalesforce"] is bool b && b)
+            )
+            .Select(d =>
+            {
+                d["UpdateTo"] = "Yes";
+                return d;
+            })
+            .ToList();
+    
+        var updateToNo = Result02
+            .Where(ra =>
+                !Result01.Any(cr =>
+                    cr.ContainsKey("accountid") &&
+                    ra["accountid"]?.ToString() == cr["accountid"]?.ToString()
+                )
+            )
+            .Select(d =>
+            {
+                d["UpdateTo"] = "No";
+                return d;
+            })
+            .ToList();
+    
+        var FinalResults = updateToYes
+            .Concat(updateToNo)
+            .ToList();
+    
+        return Ok(FinalResults);
+    }
+    ```
+
+    The comparison produces two separate collections.
+
+    **Accounts to update to Yes**
+
+    The `updateToYes` collection contains accounts returned by `Accounts01` that do not currently have `namic_sendtosalesforce` set to `true`.
+
+    Each qualifying record receives an additional property:
+
+    ```csharp
+    d["UpdateTo"] = "Yes";
+    ```
+
+    **Accounts to update to No**
+
+    The `updateToNo` collection contains accounts returned by `Accounts02` that are not present in the results of `Accounts01`.
+
+    These accounts are currently marked for Salesforce synchronization but no longer meet the defined synchronization criteria.
+
+    Each qualifying record receives an additional property:
+
+    ```csharp
+    d["UpdateTo"] = "No";
+    ```
+  </Step>
+  <Step title="Combine the results and return the response">
+    The final step combines both collections into a single list.
+
+    ```csharp
+    var FinalResults = updateToYes
+        .Concat(updateToNo)
+        .ToList();
+    
+    return Ok(FinalResults);
+    ```
+
+    The resulting collection contains all accounts requiring a change to their Salesforce synchronization flag.
+
+    Each record includes an additional `UpdateTo` property indicating the value that should be assigned to `namic_sendtosalesforce`.
+
+    Example response:
+
+    ```json
+    [
+      {
+        "accountid": "00000000-0000-0000-0000-000000000001",
+        "name": "Example Organization",
+        "namic_sendtosalesforce": false,
+        "UpdateTo": "Yes"
+      },
+      {
+        "accountid": "00000000-0000-0000-0000-000000000002",
+        "name": "Another Organization",
+        "namic_sendtosalesforce": true,
+        "UpdateTo": "No"
+      }
+    ]
+    ```
+
+    The controller returns the results using `Ok(FinalResults)`, which produces an HTTP 200 response.
+  </Step>
+</Steps>
+
+## Result Interpretation
+
+The `UpdateTo` property indicates what value should be assigned to the account's `namic_sendtosalesforce` field.
+
+| UpdateTo | Description |
+| --- | --- |
+| **Yes** | The account meets at least one Salesforce synchronization criterion but is not currently flagged for synchronization. |
+| **No** | The account is currently flagged for synchronization but no longer meets any of the defined criteria. |
+
+Only accounts requiring a change are included in the final response. Accounts that already have the correct value are excluded.
+
+## Overall Workflow
+
+The following summarizes the complete process:
+
+1. Execute `Accounts01` to identify accounts that meet the Salesforce synchronization criteria.
+2. Execute `Accounts02` to retrieve accounts currently marked for Salesforce synchronization.
+3. Compare the two result sets to identify accounts requiring a change.
+4. Assign an `UpdateTo` value of `Yes` or `No` to each account requiring an update.
+5. Combine both collections and return the results.
+
+## Important Notes
+
+- The SQL queries are executed through the NAMIC TDS connector.
+- The synchronization criteria are evaluated dynamically, including sponsorship records for the current and previous calendar years.
+- The controller identifies the accounts requiring changes but does not directly update the Dataverse records.
+- A separate process is required to apply the returned `UpdateTo` values to the `namic_sendtosalesforce` field.
+- Accounts that already have the appropriate value are not included in the response.

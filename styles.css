@@ -141,3 +141,7 @@ cursor:pointer;
   position-area: top;
   margin: 10px;
 }
+
+.link{
+  text-decoration:none!important;
+}

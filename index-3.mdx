@@ -1,48 +1,103 @@
 ---
-title: "Component Testing"
-description: "This page is going to be deleted eventually"
+title: "PB: Engagement Detail"
+description: "The purpose of this flow is to ensure the Current Year and Current Month fields on the Engagement Detail entity are accurate. If an engagement detail record's Activity Date is in the current year, Current Year should say yes. If the Activity Date is in the current month, Current Month should say yes. If the activity falls outside the current month or current year, the corresponding field should say no."
 mode: "wide"
 ---
-
----
-
-<img
-  src="https://codahosted.io/docs/T9avRv1drM/blobs/bl--OjC_e_N0y/131bd3b5614e26f93f8112920d0873824a2f08bd363f12b37bb682fde933a8d21f3c2dd1101932fb018eae30a4f05814337565c06c163a7687603d71437b6c3679fc31456b9f4b02920b3833a1755489b02e5a4d7ab11a0947230531b9d49299672c5ac9"
-  alt="image.png"
-  style={{ width:"62%" }}
-/>
 
 <hr />
 
 import { FlowCard } from '/app.jsx'
 import { FlowInput } from '/app.jsx'
-import { FlowPopover } from '/app.jsx'
 
 <FlowCard title="Runs Once Daily" type="schedule" step="1">
-  This flow runs on a schedule once every day.
+  This flow runs on a schedule once every day at 10am.
 </FlowCard>
 
 <br />
 
-<FlowCard title="List Invoices with Blank Receipt" type="dataverse" step="2">
-  <FlowInput title="Table Name">Invoice </FlowInput>
-  <FlowInput title="Filter Rows">namic_mxreciept eq <code>null</code> </FlowInput>
+<FlowCard title="HTTP Get Engagement Details" type="get" step="2">
+  An HTTP request is made to the NAMIC Protech TDS Connector web API. This API returns the Engagement Detail records that need to be updated in JSON format.
+
+  <FlowInput title="Method">GET</FlowInput>
+  <FlowInput title="URL">[https://namicprotecttdsconnectorprod-eagvdxdzaxhzh4g8.northcentralus-01.azurewebsites.net/Search/Engagement/GetDetails](https://namicprotecttdsconnectorprod-eagvdxdzaxhzh4g8.northcentralus-01.azurewebsites.net/Search/Engagement/GetDetails)</FlowInput>
 </FlowCard>
+
+The API executes the following SQL query to identify records where the Current Year or Current Month fields need to be updated.
+
+```sql
+SELECT
+    pa_engagementdetailid,
+    pa_activitydate,
+
+    CASE
+        WHEN YEAR(pa_activitydate) = YEAR(GETDATE()) AND namic_currentyear <> 1 THEN 'true'
+        WHEN YEAR(pa_activitydate) <> YEAR(GETDATE()) AND namic_currentyear = 1 THEN 'false'
+        ELSE CASE WHEN namic_currentyear = 1 THEN 'true' ELSE 'false' END
+    END AS updateYearTo,
+
+    CASE
+        WHEN YEAR(pa_activitydate) = YEAR(GETDATE())
+        AND MONTH(pa_activitydate) = MONTH(GETDATE())
+        AND namic_currentmonth <> 1 THEN 'true'
+
+        WHEN (YEAR(pa_activitydate) <> YEAR(GETDATE()) OR MONTH(pa_activitydate) <> MONTH(GETDATE()))
+        AND namic_currentmonth = 1 THEN 'false'
+
+        ELSE CASE WHEN namic_currentmonth = 1 THEN 'true' ELSE 'false' END
+    END AS updateMonthTo
+
+FROM pa_engagementdetail
+
+WHERE
+(
+    (YEAR(pa_activitydate) = YEAR(GETDATE()) AND namic_currentyear <> 1)
+    OR (YEAR(pa_activitydate) <> YEAR(GETDATE()) AND namic_currentyear = 1)
+
+    OR (YEAR(pa_activitydate) = YEAR(GETDATE())
+    AND MONTH(pa_activitydate) = MONTH(GETDATE())
+    AND namic_currentmonth <> 1)
+
+    OR ((YEAR(pa_activitydate) <> YEAR(GETDATE())
+    OR MONTH(pa_activitydate) <> MONTH(GETDATE()))
+    AND namic_currentmonth = 1)
+);
+```
+
+The request returns a JSON array containing all Engagement Detail records that require an update.
+
+For example, the first record below has an Activity Date outside the current month and year, so both fields are set to false. The second record falls within the current month and year, so both fields are set to true.
+
+```json
+[
+  {
+    "pa_engagementdetailid": "ece2d25f-f285-ef11-ac21-00224826e1e2",
+    "pa_activitydate": "2025-02-13T07:55:56",
+    "updateYearTo": "false",
+    "updateMonthTo": "false"
+  },
+  {
+    "pa_engagementdetailid": "0c2b9c88-1114-f111-8407-6045bdec5c95",
+    "pa_activitydate": "2026-02-18T05:00:00",
+    "updateYearTo": "true",
+    "updateMonthTo": "true"
+  }
+]
+```
 
 <br />
 
-<FlowCard title="Apply to each invoice" type="loop" step="3">
-  An apply to each loop is applied to each record in the previous list action.
+<FlowCard title="Bulk Update API" type="scope" step="3">
+  The JSON array returned by the previous step is passed into the Bulk Update API. This API processes each Engagement Detail record and updates its Current Year and Current Month fields based on the `updateYearTo` and `updateMonthTo` values.
 
-  <FlowCard title="Update Invoice to Populate Receipt" type="dataverse" step="3a">
-    <FlowInput title="Table Name">Invoices </FlowInput>
-    <FlowInput title="Row Id">..... </FlowInput>
-    <FlowInput title="MX Reciept">.... </FlowInput>
-  </FlowCard>
+  The following Dataverse fields are updated:
+
+  <FlowInput title="Current Year">namic_currentyear</FlowInput>
+  <FlowInput title="Current Month">namic_currentmonth</FlowInput>
 </FlowCard>
 
-<br />
+Each record is updated individually using its `pa_engagementdetailid` to identify the corresponding Engagement Detail record.
 
-<FlowPopover title="More Information">
-  This is additional information displayed in a popover.
-</FlowPopover>
+<img
+  src={"https://codaio.imgix.net/docs/T9avRv1drM/blobs/bl-0itdaEZB_Q/48919a37348c8e278b904eb8621105b6d4f8cfc80377776bd282f2ae5f9ad786c00072d3f99901f290875ac5ddcf3257d4902099177134b79ecca432f05c860fb54e2a078f361ac1cfea04a9d5b0e8f680e2a3ce3ba03aae268ea5334ddd0f7cce5a1b86?fit=crop&w=892&h=131&dpr=2&crop=focalpoint&fm=webp&lossless=true&fp-x=0.5&fp-y=0.30195399135516665&fp-z=1"}
+  alt="Bulk Update API configuration"
+/>
