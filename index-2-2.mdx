@@ -19,28 +19,30 @@ import { FlowInput } from '/app.jsx'
   <FlowInput title="Table Name">Contacts</FlowInput>
 
   <FlowInput title="Fetch XML">
-    ```javascript
-    <fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="true">
-      <entity name="contact">
-          <attribute name="fullname" />
-          <attribute name="telephone1" />
-          <attribute name="pa_member" />
-          <attribute name="pa_contactnumber" />
-          <attribute name="namic_membertype" />
-          <order attribute="fullname" descending="false" />
-          <filter type="and">
-          <condition attribute="statecode" operator="eq" value="0" />
-          <condition attribute="emailaddress1" operator="null" />
-          <condition attribute="namic_membertype" operator="ne" value="7" />
-          </filter>
-          <link-entity name="account" from="primarycontactid" to="contactid" link-type="inner" alias="ac">
-          <filter type="and">
-              <condition attribute="accountnumber" operator="not-null" />
-          </filter>
-          </link-entity>
-      </entity>
-    </fetch>
-    ```
+    <div className="no-borders">
+      ```javascript
+      <fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="true">
+        <entity name="contact">
+            <attribute name="fullname" />
+            <attribute name="telephone1" />
+            <attribute name="pa_member" />
+            <attribute name="pa_contactnumber" />
+            <attribute name="namic_membertype" />
+            <order attribute="fullname" descending="false" />
+            <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+            <condition attribute="emailaddress1" operator="null" />
+            <condition attribute="namic_membertype" operator="ne" value="7" />
+            </filter>
+            <link-entity name="account" from="primarycontactid" to="contactid" link-type="inner" alias="ac">
+            <filter type="and">
+                <condition attribute="accountnumber" operator="not-null" />
+            </filter>
+            </link-entity>
+        </entity>
+      </fetch>
+      ```
+    </div>
   </FlowInput>
 </FlowCard>
 

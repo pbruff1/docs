@@ -126,8 +126,9 @@ cursor:pointer;
 
 
 
-
-
-
-
-
+.no-borders,
+.no-borders * {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
