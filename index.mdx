@@ -16,6 +16,7 @@ mode: "wide"
 
 import { FlowCard } from '/app.jsx'
 import { FlowInput } from '/app.jsx'
+import { Field } from '/app.jsx'
 
 <FlowCard title="Runs Once Daily" type="schedule" step="1">
   This flow runs on a schedule once every day.
@@ -36,7 +37,7 @@ import { FlowInput } from '/app.jsx'
   <FlowCard title="Update Invoice to Populate Receipt" type="dataverse" step="3a">
     <FlowInput title="Table Name">Invoices </FlowInput>
     <FlowInput title="Row Id"><code>invoiceid</code></FlowInput>
-    <FlowInput title="MX Reciept">`https://my.namic.org/My-Account/My-Invoices/View-Invoice?invoiceid` = <Field>invoiceid</Field></FlowInput>
+    <FlowInput title="MX Reciept">[https://my.namic.org/My-Account/My-Invoices/View-Invoice?invoiceid](https://my.namic.org/My-Account/My-Invoices/View-Invoice?invoiceid) = <Field>invoiceid</Field></FlowInput>
   </FlowCard>
 </FlowCard>
 
