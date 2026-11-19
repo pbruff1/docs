@@ -42,29 +42,3 @@ export const FlowInput = ({ title, children }) => {
 };
 
 
-
-export const FlowPopover = ({ title, children }) => {
-  return (
-    <span
-      className="bootstrap-scope"
-      style={{ display: "inline-block" }}
-    >
-      <button
-        type="button"
-        data-bs-toggle="popover"
-        data-bs-trigger="click"
-        data-bs-title={title}
-        data-bs-content={children}
-        style={{
-          border: "none",
-          background: "none",
-          color: "#64AECF",
-          padding: 0,
-          cursor: "pointer"
-        }}
-      >
-        {title}
-      </button>
-    </span>
-  );
-};
