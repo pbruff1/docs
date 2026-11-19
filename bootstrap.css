@@ -3,37 +3,37 @@
   --bs-popover-max-width: 276px;
   --bs-popover-font-size: 0.875rem;
   --bs-popover-bg: #fff;
+  --bs-popover-border-width: 1px;
   --bs-popover-border-color: rgba(0, 0, 0, 0.175);
   --bs-popover-border-radius: 0.5rem;
+  --bs-popover-box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  --bs-popover-header-padding-x: 1rem;
+  --bs-popover-header-padding-y: 0.5rem;
+  --bs-popover-header-bg: #f0f0f0;
+  --bs-popover-body-padding-x: 1rem;
+  --bs-popover-body-padding-y: 1rem;
 
   position: absolute;
   z-index: var(--bs-popover-zindex);
   display: block;
   max-width: var(--bs-popover-max-width);
+  font-family: inherit;
   font-size: var(--bs-popover-font-size);
   background-color: var(--bs-popover-bg);
   background-clip: padding-box;
-  border: 1px solid var(--bs-popover-border-color);
+  border: var(--bs-popover-border-width) solid var(--bs-popover-border-color);
   border-radius: var(--bs-popover-border-radius);
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  box-shadow: var(--bs-popover-box-shadow);
 }
 
 .bootstrap-scope .popover-header {
-  padding: 0.5rem 0.75rem;
+  padding: var(--bs-popover-header-padding-y) var(--bs-popover-header-padding-x);
   margin: 0;
   font-size: 1rem;
-  background-color: #f0f0f0;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: var(--bs-popover-header-bg);
+  border-bottom: 1px solid var(--bs-popover-border-color);
 }
 
 .bootstrap-scope .popover-body {
-  padding: 0.5rem 0.75rem;
-  color: #212529;
-}
-
-.bootstrap-scope .popover-arrow {
-  position: absolute;
-  display: block;
-  width: 1rem;
-  height: 0.5rem;
+  padding: var(--bs-popover-body-padding-y) var(--bs-popover-body-padding-x);
 }
