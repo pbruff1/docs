@@ -48,23 +48,11 @@ import * as React from 'react';
 import '@mantine/core/styles.css';
 import { MantineProvider, Card, Group, Title, Text, Button, Popover } from '@mantine/core';
 
-export default function App() {
-  return (
-    <MantineProvider>
-      <Card shadow="sm" padding="lg" radius="md" withBorder maw={360} m="xl">
-        <Title order={3} mb="xs">Popover example</Title>
-        <Text c="dimmed" size="sm" mb="md">
-          Click the button to reveal more information.
-        </Text>
-        <Popover width={220} position="bottom" withArrow shadow="md">
-          <Popover.Target>
-            <Button color="grape">Open popover</Button>
-          </Popover.Target>
-          <Popover.Dropdown>
-            <Text size="sm">Hello from a Mantine popover!</Text>
-          </Popover.Dropdown>
-        </Popover>
-      </Card>
-    </MantineProvider>
-  );
-}
+export const FlowPopover = ({ title, children }) => (
+  <Popover position="bottom" withArrow shadow="md">
+    <Popover.Target>
+      <Button variant="light">{title}</Button>
+    </Popover.Target>
+    <Popover.Dropdown>{children}</Popover.Dropdown>
+  </Popover>
+);
