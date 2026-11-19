@@ -142,6 +142,15 @@ cursor:pointer;
   margin: 10px;
 }
 
-a.link{
-  text-decoration:none!important;
+a.link,
+a.link:hover,
+a.link:focus,
+a.link:visited,
+a.link::before,
+a.link::after {
+  text-decoration: none !important;
+  font-weight: normal !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+  background-image: none !important;
 }
